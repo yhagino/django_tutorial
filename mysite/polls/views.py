@@ -1,11 +1,19 @@
 from django.http import HttpResponse
+from django.template import loader
+from django.shortcuts import render
 
 from .models import Question
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    output = ', '.join([q.question_text for q in latest_question_list])
-    return HttpResponse(output)
+    # template = loader.get_template('polls/index.html')
+    # context = {
+    #     'latest_question_list': latest_question_list,
+    # }
+    # return HttpResponse(template.render(context, request))
+    context = {'latest_question_list': latest_question_list}
+    return render(request, 'polls/index.html', context)  # shortcuts.render
+    # render(第1引数: request オブジェクト 第2引数: テンプレート名 第3引数: （任意）として辞書)
 
 
 def index_page(request, id):
